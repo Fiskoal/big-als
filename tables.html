@@ -19,8 +19,10 @@
         <div class="container">
           <h1 class="display-4">🍔 Big Al's Restaurant</h1>
           <p class="lead">Make your reservation today!</p>
-          <button type="button" class="btn btn-primary ml-2 mr-2">View Tables</button>
-          <button type="button" class="btn btn-secondary ml-2 mr-2">Home</button>
+          <a href="/">
+          <button type="button" class="btn btn-secondary ml-2 mr-2">Home</button></a>
+          <a href="/reserve">
+          <button type="button" class="btn btn-danger ml-2 mr-2">Make Reservation</button></a>
         </div>
     </div>
 
@@ -33,8 +35,8 @@
             <h4>Current Reservations</h4>
         </div>
         <div class="card-body">
-            <ul id="tablelist" class="list-group">
-                <li class="list-group-item mt-4">
+            <ul id="table-list" class="list-group">
+                <!-- <li class="list-group-item mt-4">
                     <h2>Table #1</h2>
                     <hr>
                     <h2>ID: 2342</h2>
@@ -57,13 +59,41 @@
                     <h2>Name: Test3</h2>
                     <h2>Email: test3@gmail.com</h2>
                     <h2>Phone: 23423423</h2>
-                </li>
+                </li> -->
             </ul>
         </div>
     </div>
 </div>
     <!-- Waiting List Card-->
 </div>
+
+<script type="text/javascript">
+
+    fetch("/api/reservations")
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data);
+            let listEl = document.getElementById("table-list");
+            let tableArr = [];
+            for (i = 0; i < 5; i++) {
+                tableArr.push(data[i]);
+            }
+            tableArr.forEach(element => {
+                if (element != undefined) {
+                    listEl.innerHTML += (`<li class="list-group-item mt-4">
+<h2>Table #${(tableArr.indexOf(element)) + 1}</h2>
+<hr>
+<h2>ID: ${element.id}</h2>
+<h2>Name: ${element.name}</h2>
+<h2>Email: ${element.email}</h2>
+<h2>Phone: ${element.phone}</h2>
+</li>
+                        `)
+                }
+            });
+        })
+
+</script>
 
 </body>
 

@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <title>Reservations</title>
 </head>
 <body>
@@ -13,8 +14,10 @@
         <div class="container">
           <h1 class="display-4">🍔 Big Al's Restaurant</h1>
           <p class="lead">Make your reservation today!</p>
-          <button type="button" class="btn btn-primary ml-2 mr-2">View Tables</button>
-          <button type="button" class="btn btn-secondary ml-2 mr-2">Home</button>
+          <a href="/">
+          <button type="button" class="btn btn-secondary ml-2 mr-2">Home</button></a>
+          <a href="/tables">
+          <button type="button" class="btn btn-primary ml-2 mr-2">View Tables</button></a>
         </div>
     </div>
 
@@ -25,7 +28,7 @@
               <h5 class = "font-weight-bold">Table Reservations</h5>
             </div>
         <div class="form-group p-3">
-          <label for="customer-name">Email address</label>
+          <label for="customer-name">Name</label>
           <input type="name" class="form-control" id="customer-name" placeholder="Enter your name...">
         </div>
         <div class="form-group p-3">
@@ -40,15 +43,53 @@
             <label for="customer-id">Unique ID</label>
             <input type="uniqueid" class="form-control" id="customer-id" placeholder="Enter a unique identifier...">
         </div>  
-        <button type="submit" class="btn btn-primary ml-3 mb-3">Submit</button>
+        <button id="submit" type="submit" class="btn btn-primary ml-3 mb-3">Submit</button>
       </form>
     </div>
 
     <footer class = "footer d-flex justify-content-center mt-3 mb-3">
-        <a class = "ml-2 mr-2" href = "#">API Table Link</a>|<a class = "ml-2 mr-2" href = "#">API Wait List</a>
+        <a class = "ml-2 mr-2" href = "#">API Table Link</a>|<a class = "ml-2 mr-2" href = "/api/reservations">API Wait List</a>
     </footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+
+  const submitBtn = document.getElementById("submit");
+
+  submitBtn.addEventListener("click", function(e) {
+    e.preventDefault();
+
+    let name = document.getElementById("customer-name").value.trim();
+    let phone = document.getElementById("customer-phone").value.trim() ;
+    let email = document.getElementById("customer-email").value.trim();
+    let id = document.getElementById("customer-id").value.trim();
+
+    let newCustomer = {
+      name: name,
+      phone: phone,
+      email: email,
+      id: id,
+    }
+
+    fetch('/api/reservations', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(newCustomer),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log('reserve.html', data);
+            alert(`Reservation for ${data.name} added successfully!`);
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+          });
+
+  })
+
+</script>
 </body>
 </html>

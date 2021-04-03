@@ -19,6 +19,10 @@ app.get("/api/reservations", (req, res) => {
   return res.json(reservations);
 });
 
+app.get("/api/waitlist", (req, res) => {
+  return res.json(reservations);
+});
+
 app.post('/api/reservations', (req, res) => {
   const newReservation = req.body;
 
